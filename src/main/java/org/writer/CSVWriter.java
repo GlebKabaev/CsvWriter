@@ -20,7 +20,7 @@ public class CSVWriter implements Writable {
             throw new IllegalStateException("Отсутствуют поля с аннотацией CsvColumn");
         }
 
-        try (BufferedWriter bw = Files.newBufferedWriter(Paths.get(fileName))) {
+        try (BufferedWriter bw = Files.newBufferedWriter(Paths.get(fileName+".CSV"))) {
             String header = getHeaders(csvFields);
             bw.write(header);
             bw.newLine();
@@ -33,7 +33,7 @@ public class CSVWriter implements Writable {
 
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Файл не найден");
         }
     }
 
@@ -61,7 +61,7 @@ public class CSVWriter implements Writable {
             try {
                 value = field.get(dataClass);
             } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Невозможно получить доступ к полю");
             }
 
             value = formatForCsv(value.toString());
